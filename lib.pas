@@ -2,6 +2,8 @@ unit lib;
 
 interface 
 
+    const size = 13;
+
     type pNode = ^Node;
 
         Node = record 
@@ -10,6 +12,9 @@ interface
         end;
 
         infoArr = array[1..5] of string;
+
+
+        dataSet = array[1..size] of infoArr;
         
     procedure addUniv(var head: pNode ; info : infoArr);
     procedure addFac(var head : pNode; info : infoArr);
@@ -42,10 +47,11 @@ interface
     procedure sortStudent(var head : pNode);
 
 
+    procedure setValues(var head : pNode);
     procedure print(head : pNode ; level : integer);
     procedure free(var head : pNode);
 
-    procedure executeFunc(funcNumber : integer);
+    procedure executeFunc(funcNumber : integer ;var head : pNode);
     procedure printMenu();
 
 implementation
@@ -124,7 +130,7 @@ function getRandomInfo() : infoArr;
         end;
     
     begin
-        randomdize;
+        randomize;
         for i := 1 to 5 do 
             result[i] := getRandomString();
         getRandomInfo := result;
@@ -176,10 +182,10 @@ function getFromList(head : pNode ; value : string) : pNode;
         getFromList := result;
     end;
 
-procedure addUniv(var head: pNode ; value : string);
+procedure addUniv(var head: pNode ; info : infoArr);
 
     begin
-        addToList(head , value);
+        addToList(head , info[1]);
     end;
 
 procedure addFac(var head : pNode ; info : infoArr);
@@ -560,56 +566,159 @@ procedure printMenu();
         close(myFile)
     end;
 
-procedure executeFunc(funcNumber : integer ; head : pNode);
+function getInput(number : integer) : infoArr;
 
-    var answer : integer;
+    var result : infoArr;
+        i : integer;
+
+    begin
+        for i := 1 to 5 do 
+            result[i] := '';
+        
+        if (number >= 1) then 
+            begin
+                write('type the University Name : ');readln(result[1]); 
+            end;
+        
+        if (number >= 2) then 
+            begin
+                write('type the Faculty Name : ');readln(result[2]); 
+            end;
+        
+        if (number >= 3) then 
+            begin
+                write('type the Departement Name : ');readln(result[3]); 
+            end;
+        
+        if (number >= 4) then 
+            begin
+                write('type the Speciality Name : ');readln(result[4]); 
+            end;
+        
+        if (number >= 5) then 
+            begin
+                write('type the Student Name : ');readln(result[5]); 
+            end;
+        
+        getInput :=  result;
+
+    end;
+
+
+function getData() : dataSet;
+
+    var result : dataSet;
+        i , j : integer;
+        myFile : text;
+        s : string;
+
+    begin
+        i := 1;
+        j := 1;
+
+        assign(myFile , 'data.txt');
+
+        reset(myFile);
+
+        while (not eof(myFile)) do 
+            begin
+                if (j = 6) then 
+                    begin 
+                        j := 1;
+                        i := i + 1;
+                    end;
+                readln(myFile , s);
+                result[i][j] := s;
+                j := j + 1;
+            end;
+        
+        close(myFile);
+        getData := result;
+    end;
+
+procedure setValues(var head : pNode);
+
+    var data : dataSet;
+        i : integer;
+
+    begin
+        free(head);
+
+        data := getData();
+
+        for i := 1 to size do 
+            addStudent(head , data[i]);
+    end;
+
+procedure writeLine();
+
+    var i : integer;
+
+    begin
+        for i := 1 to 3 do writeln;
+        for i := 1 to 50 do 
+            write('='); 
+        writeln;
+        for i := 1 to 3 do writeln;
+    end;
+
+
+//this will answer the question of wether a univ (for exemple) exists or no! 
+procedure getAnswer(bool : boolean);
+
+    begin
+        if (bool) then writeln('well found! :) ')
+        else 
+            writeln('not found! :( ') 
+    end;
+
+procedure executeFunc(funcNumber : integer ;var head : pNode);
+
+    var number : integer;
         info : infoArr;
 
     begin
-        if ((func > 20) or (func < 0)) then writeln('function number not in range!')
+        if ((funcNumber > 24) or (funcNumber < 0)) then writeln('function number not in range!')
         else 
             begin
-                case func of 
-                    1 : 
-                        begin 
-                            info := getInput(func);
-                            addUniv(head , info);
-                        end
-                    2 : begin
-                            info := getInput(func);
-                            addFac(head , info); 
-                        end;
-                    3 : begin
-                            info := getInput(func);
-                            addDep(head , info); 
-                        end;
-                    4 : begin
-                            info := getInput(func);
-                            addSpec(head , info); 
-                        end;
-                    5 : begin
-                            info := getInput(func);
-                            addStudent(head , info); 
-                        end;
+                if ((funcNumber = 22) or ((funcNumber < 11) and (funcNumber > 5))) then writeLine;
 
-                    6 : findUniv(head : pNode ; info : infoArr) : boolean;
-                    7 : findFac(head : pNode; info : infoArr) : boolean;
-                    8 : findDep(head : pNode ; info : infoArr) : boolean;
-                    9 : findSpec(head : pNode ; info : infoArr) : boolean;
-                    10 : findStudent(head : pNode ; info : infoArr) : boolean;
-                    11 : removeUniv(head : pNode ; info : infoArr);
-                    12 : removeFac(head : pNode ; info : infoArr);
-                    13 : removeDep(head : pNode ; info : infoArr);
-                    14 : removeSpec(head : pNode ; info : infoArr);
-                    15 : removeStudent(head : pNode ; info : infoArr);
-                    16 : sortUniv(head : pNode);
-                    17 : sortFac(head : pNode);
-                    18 : sortDep(head : pNode);
-                    19 : sortSpec(head : pNode);
-                    20 : sortStudent(head : pNode);
+                if (funcNumber mod 5 = 0) then number := 5
+                else 
+                    number := funcNumber mod 5;
+                
+                if (funcNumber <= 15) then info := getInput(number);
+
+                case funcNumber of 
+                    1  : addUniv(head , info);
+                    2  : addFac(head , info); 
+                    3  : addDep(head , info); 
+                    4  : addSpec(head , info); 
+                    5  : addStudent(head , info); 
+                    6  : getAnswer(findUniv(head , info));
+                    7  : getAnswer(findFac(head, info));
+                    8  : getAnswer(findDep(head , info));
+                    9  : getAnswer(findSpec(head , info));
+                    10 : getAnswer(findStudent(head , info));
+                    11 : removeUniv(head , info);
+                    12 : removeFac(head , info);
+                    13 : removeDep(head , info);
+                    14 : removeSpec(head , info);
+                    15 : removeStudent(head , info);
+                    16 : sortUniv(head);
+                    17 : sortFac(head);
+                    18 : sortDep(head);
+                    19 : sortSpec(head);
+                    20 : sortStudent(head);
+                    21 : setValues(head);
+                    22 : print(head , 0);
+                    23 : free(head);
+                    24 : printMenu();
                 end;
             end;
+        writeLine;
     end;
+
 
 begin 
 end.

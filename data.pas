@@ -10,8 +10,9 @@ interface
 
     function getData() : dataSet;
     procedure printArray(info : infoArr);
-    procedure setData();
-    function setValues() : pNode;
+    procedure setValues(var head : pNode);
+    // procedure setRandomData();
+
 
 implementation
 
@@ -26,7 +27,7 @@ function getData() : dataSet;
         i := 1;
         j := 1;
 
-        assign(myFile , 'result.txt');
+        assign(myFile , 'data.txt');
 
         reset(myFile);
 
@@ -57,76 +58,35 @@ procedure printArray(info : infoArr);
         writeln(info[5] , ']'); 
     end;
 
-procedure setRandomData();
+// procedure setRandomData();
 
-    var myFile : text;
-        info : infoArr;
-        i : integer;
+//     var myFile : text;
+//         info : infoArr;
+//         i : integer;
     
-    begin
-        info := getRandomInfo();
+//     begin
+//         info := getRandomInfo();
 
-        assign(myFile , 'data.txt');
+//         assign(myFile , 'data.txt');
 
-        append(myFile);
+//         append(myFile);
 
-        for i := 1 to 5 do 
-            writeln(myFile , info[i]);
+//         for i := 1 to 5 do 
+//             writeln(myFile , info[i]);
         
-        close(myFile);
-    end;
+//         close(myFile);
+//     end;
 
-function getInput(number : integer) : infoArr;
+procedure setValues(var head : pNode);
 
-    var result : infoArr;
-
-    begin
-        for i := 1 to 5 do 
-            result[i] := '';
-        
-        if (number >= 1) then 
-            begin
-                write('type the University Name : ');readln(result[1]); 
-            end;
-        
-        if (number >= 2) then 
-            begin
-                write('type the Faculty Name : ');readln(result[2]); 
-            end;
-        
-        if (number >= 1) then 
-            begin
-                write('type the Departement Name : ');readln(result[3]); 
-            end;
-        
-        if (number >= 1) then 
-            begin
-                write('type the Speciality Name : ');readln(result[4]); 
-            end;
-        
-        if (number >= 1) then 
-            begin
-                write('type the Student Name : ');readln(result[5]); 
-            end;
-        
-        getInput :=  result;
-
-    end;
-
-
-function setValues() : pNode;
-
-    var head : pNode;
-        data : dataSet;
+    var data : dataSet;
+        i : integer;
 
     begin
         data := getData();
-        head := NIL;
 
         for i := 1 to size do 
             addStudent(head , data[i]);
-
-        setData := head; 
     end;
 
 

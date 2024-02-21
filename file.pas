@@ -1,6 +1,6 @@
 program test;
 
-uses lib , data;
+uses lib , data , crt;
 
 function getString(length : integer) : string;
 
@@ -17,20 +17,30 @@ function getString(length : integer) : string;
     end;
 
 
+
+
 procedure main();
 
-    var func : integer;
-        
+    var  head : pNode;
+        number : integer;
     
     begin       
-        head := setData();
-
         printMenu();
+        head := NIL;
+        
+        repeat
+            write('type 0 to end the program , a number of some function otherwise : ');
+            readln(number);
+            if (number <> 0) then
+                begin 
+                    clrscr;
+                    executeFunc(number , head);
+                end;
+        until (number = 0);
 
-        write('choose one of the functions above : ');readln(func);
+        writeln;
 
-
-
+        writeln('thank you!');
 
         free(head);
     end;
