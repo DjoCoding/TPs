@@ -1,0 +1,34 @@
+Welcome!!
+
+write a number in order to execute a specific function or procedure
+
+1  - Create University 
+2  - Create Faculty
+3  - Create Departement
+4  - Create Specialty
+5  - Create Student 
+
+6  - Find University 
+7  - Find Faculty
+8  - Find Departement
+9  - Find Specialty
+10 - Find Student 
+
+11 - Remove University 
+12 - Remove Faculty
+13 - Remove Departement
+14 - Remove Specialty
+15 - Remove Student 
+
+16 - Sort Universities 
+17 - Sort Faculties
+18 - Sort Departements
+19 - Sort Specialties
+20 - Sort Students
+
+21 - Set Structure Example
+22 - Print Structure 
+23 - Delete All Structure
+24 - Print Menu
+
+
