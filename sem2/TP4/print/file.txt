@@ -1,0 +1,5 @@
+type the University Name
+type the Faculty Name
+type the Departement Name
+type the Speciality Name
+type the Student Name
