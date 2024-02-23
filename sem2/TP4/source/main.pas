@@ -25,7 +25,7 @@ procedure main();
 
         // writeln('thank you!');
 
-        // free(head);
+        // destroy(head);
         
         head := NIL;
 
@@ -37,7 +37,7 @@ procedure main();
             if (number <> 0) then executeFunc(number , head);
         until(number = 0);
 
-        free(head);
+        destroy(head);
     end;
 
 begin

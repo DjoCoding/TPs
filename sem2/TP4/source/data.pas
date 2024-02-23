@@ -49,7 +49,7 @@ procedure printMenu();
         s : string;
 
     begin
-        assign(myFile , './print/menu.txt');
+        assign(myFile , '../print/menu.txt');
 
         reset(myFile);
 
@@ -73,7 +73,7 @@ function getInput(number : integer) : infoArr;
         for i := 1 to 5 do 
             result[i] := '';
         
-        assign(myFile , './print/file.txt');
+        assign(myFile , '../print/file.txt');
 
         reset(myFile);
 
@@ -89,7 +89,7 @@ function getInput(number : integer) : infoArr;
         getInput :=  result;
     end;
 
-
+//this will set all the information about a student in a an array then append it to another array!
 function getData() : dataSet;
 
     var result : dataSet;
@@ -101,7 +101,7 @@ function getData() : dataSet;
         i := 1;
         j := 1;
 
-        assign(myFile , 'data.txt');
+        assign(myFile , '../print/data.txt');
 
         reset(myFile);
 
@@ -123,7 +123,7 @@ procedure setValues(var head : pNode);
         i : integer;
 
     begin
-        free(head);
+        destroy(head);
 
         data := getData();
 
@@ -153,6 +153,7 @@ procedure getAnswer(bool : boolean);
             writeln('not found! :( ') 
     end;
 
+//additional procedure (can be implemented directly in other procedures)
 procedure writeTab(size : integer);
 
     var i : integer;
@@ -161,6 +162,7 @@ procedure writeTab(size : integer);
         for i := 1 to size do 
             write('     '); 
     end;
+
 
 function getStatistics(head : pNode ; info : infoArr) : stat;
     
@@ -206,7 +208,7 @@ procedure printStatistics(head : pNode);
     end;
 
 //this procedure will print the content of the structure without using recursion
-procedure foo(head : pNode);
+procedure printStructure(head : pNode);
 
     var univ , fac , dep , spec , student : pNode;
         i : integer;
@@ -315,15 +317,15 @@ procedure executeFunc(funcNumber : integer ;var head : pNode);
                         end;
                     13 : begin 
                             removeDep(head , info);
-                            writeln('the Departement ''' , info[1] ,''' is removed succesfully!');
+                            writeln('the Departement ''' , info[3] ,''' is removed succesfully!');
                         end;
                     14 : begin 
                             removeSpec(head , info);
-                            writeln('the Speciality ''' , info[1] ,''' is removed succesfully!');
+                            writeln('the Speciality ''' , info[4] ,''' is removed succesfully!');
                         end;
                     15 : begin
                             removeStudent(head , info);
-                            writeln('the Student ''' , info[1] ,''' is removed succesfully!');
+                            writeln('the Student ''' , info[5] ,''' is removed succesfully!');
                         end;
                     16 : 
                         begin 
@@ -355,9 +357,9 @@ procedure executeFunc(funcNumber : integer ;var head : pNode);
                             setValues(head);
                             writeln('information set succesfully!');
                         end;
-                    22 : foo(head);
+                    22 : printStructure(head);
                     23 : begin 
-                            free(head);
+                            destroy(head);
                             writeln('all cleared!');
                         end;
                     24 : printMenu();

@@ -13,7 +13,6 @@ interface
 
         infoArr = array[1..5] of string;
 
-
         dataSet = array[1..size] of infoArr;
         
     procedure addUniv(var head: pNode ; info : infoArr);
@@ -46,14 +45,8 @@ interface
     procedure sortSpec(var head : pNode);
     procedure sortStudent(var head : pNode);
 
-
-    // procedure setValues(var head : pNode);
     procedure print(head : pNode ; level : integer);
-    procedure free(var head : pNode);
-
-    // procedure executeFunc(funcNumber : integer ;var head : pNode);
-    // procedure printMenu();
-    // procedure foo(head : pNode);
+    procedure destroy(var head : pNode);
 
     function getNumberUniv(head : pNode) : integer;
     function getNumberFac(head : pNode ; info : infoArr) : integer;
@@ -61,11 +54,9 @@ interface
     function getNumberSpec(head : pNode ; info : infoArr) : integer;
     function getNumberStudent(head : pNode ; info : infoArr) : integer;
 
-
 implementation
 
-
- 
+//this will create new nodes
 function make(value : string) : pNode;
 
     var node : pNode;
@@ -115,33 +106,6 @@ procedure sortList(var head : pNode);
                         current := current^.next;
                     end; 
             end;
-    end;
-
-function getRandomInfo() : infoArr;
-
-    var result : infoArr;
-        i : integer;
-    
-    function getRandomString() : string;
-        
-        var result : string;
-            i , length : integer;
-
-        begin
-            result := '';
-            length := random(5) + 5;
-
-            for i := 1 to length do 
-                result := result + chr(random(26) + ord('A'));
-
-            getRandomString := result;    
-        end;
-    
-    begin
-        randomize;
-        for i := 1 to 5 do 
-            result[i] := getRandomString();
-        getRandomInfo := result;
     end;
 
 //this will remove anything below the given node (subLists)
@@ -321,6 +285,7 @@ function getStudent(head : pNode ; info : infoArr) : pNode;
         getStudent := result;
     end;
 
+//this procedure uses recursion (another one that does the same thing is present in the data file (iterative))
 procedure print(head : pNode ; level : integer);
 
     var current : pNode;
@@ -342,7 +307,8 @@ procedure print(head : pNode ; level : integer);
             end;
     end;
 
-procedure free(var head : pNode);
+//this will destroy all the structure
+procedure destroy(var head : pNode);
 
     var current , next : pNode;
 
@@ -352,7 +318,7 @@ procedure free(var head : pNode);
         while (current <> NIL) do 
             begin
                 next := current^.next;
-                free(current^.sub);
+                destroy(current^.sub);
                 dispose(current);
                 current := next; 
             end; 
@@ -390,6 +356,7 @@ function findStudent(head : pNode ; info : infoArr) : boolean;
         findStudent := getStudent(head , info) <> NIL;
     end;
 
+//this will remove a specific node in the list ( => removes everything below it )
 procedure removeNode(var head : pNode ; value : string);
 
     var current , node  : pNode;

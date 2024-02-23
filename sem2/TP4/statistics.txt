@@ -1,4 +1,0 @@
-University Name        Number Faculty        Number Departement      Number Specialities        Number Students
-Djilali Yabes        1        2        4        3
-IGMO        1        1        2        1
-Ecole Superieure Informatique        1        1        13        9
