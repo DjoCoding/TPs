@@ -356,19 +356,15 @@ procedure bubbleSort(var head , tail : pNode);
 
                 while (current^.next <> NIL) do 
                     begin
-                        last := last^.prev;
-
-                        temp := current;
-
+                        temp := head;
 
                         while ((temp^.next <> NIL)) do 
                             begin
-                                if (temp^.value < temp^.next^.value) then swapInt(temp^.value , temp^.value);
+                                if (temp^.value > temp^.next^.value) then swapInt(temp^.value , temp^.next^.value);
                                 temp := temp^.next; 
                             end;
                         
                         current := current^.next;
-                        last := last^.prev;
                     end;
             end; 
     end;
