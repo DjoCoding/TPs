@@ -33,6 +33,12 @@ interface
     function findSpec(head : pNode ; info : infoArr) : boolean;
     function findStudent(head : pNode ; info : infoArr) : boolean;
 
+    function searchUniv(head : pNode ; name : string) : boolean;
+    function searchFac(head : pNode; name : string) : boolean;
+    function searchDep(head : pNode ; name : string) : boolean;
+    function searchSpec(head : pNode ; name : string) : boolean;
+    function searchStudent(head : pNode ; name : string): boolean;
+
     procedure removeUniv(var head : pNode ; info : infoArr);
     procedure removeFac(var head : pNode ; info : infoArr);
     procedure removeDep(var head : pNode ; info : infoArr);
@@ -102,7 +108,13 @@ procedure sortList(var head : pNode);
                                 temp := temp^.next; 
                             end; 
                         
-                        if (min <> current) then swap(min^.name , current^.name);
+                        if (min <> current) then 
+                            begin   
+                                swap(min^.name , current^.name);
+                                temp := min^.sub;
+                                min^.sub := current^.sub;
+                                current^.sub := temp;
+                            end;
                         current := current^.next;
                     end; 
             end;
@@ -283,6 +295,149 @@ function getStudent(head : pNode ; info : infoArr) : pNode;
             result := getFromList(result^.sub , info[5]);
         
         getStudent := result;
+    end;
+
+function searchUniv(head : pNode ; name : string) : boolean;
+
+    var found : boolean;
+        current : pNode;
+
+    begin
+        current := head;
+        found := false;
+
+        while ((current^.next <> NIL) and (not found)) do 
+            begin 
+                found := (current^.name = name);
+                current := current^.next;
+            end; 
+
+        searchUniv := found;
+    end;
+
+function searchFac(head : pNode ; name : string) : boolean;
+
+    var found : boolean;
+        current , fac : pNode;
+
+    begin
+        current := head;
+        found := false;
+        
+        while ((current <> NIL) and (not found)) do
+            begin
+                fac := current^.sub;
+
+                while ((fac <> NIL) and (not found)) do 
+                    begin
+                        found := (fac^.name = name);
+                        fac := fac^.next; 
+                    end; 
+                
+                current := current^.next;
+            end;
+        
+
+        searchFac := found;
+    end;
+
+function searchDep(head : pNode ; name : string) : boolean;
+
+    var found : boolean;
+        current , fac , dep : pNode;
+    
+    begin
+        current := head;
+        found := false;
+
+        while ((current <> NIL) and (not found)) do 
+            begin
+                fac := current^.sub;
+
+                while ((fac <> NIL) and (not found)) do 
+                    begin 
+                        dep := fac^.sub;
+                        while ((dep <> NIL) and (not found)) do 
+                            begin
+                                found := (dep^.name = name);
+                                dep := dep^.next; 
+                            end;
+                        fac := fac^.next;
+                    end; 
+                current := current^.next;
+            end; 
+        
+        searchDep := found;
+    end;
+
+function searchSpec(head : pNode ; name : string) : boolean;
+
+    var found : boolean;
+        current , dep , fac , spec : pNode;
+
+    begin
+        current := head;
+        found := false;
+
+        while ((current <> NIL) and (not found)) do 
+            begin
+                fac := current^.sub;
+                while ((fac <> NIL) and (not found)) do 
+                    begin
+                        dep := fac^.sub;
+                        while ((dep <> NIL) and (not found)) do 
+                            begin
+                                spec := dep^.sub;
+                                while ((spec <> NIL) and (not found)) do 
+                                    begin
+                                        found := (spec^.name = name);
+                                        spec := spec^.next;
+                                    end; 
+                                dep := dep^.next;
+                            end; 
+                        fac := fac^.next;
+                    end;
+                current := current^.next; 
+            end; 
+
+        searchSpec := found;
+    end;
+
+function searchStudent(head : pNode ; name : string): boolean;
+
+    var found : boolean;
+        current , dep , fac , spec , student : pNode;
+
+    begin
+        current := head;
+        found := false;
+
+        while ((current <> NIL) and (not found)) do 
+            begin
+                fac := current^.sub;
+                while ((fac <> NIL) and (not found)) do 
+                    begin
+                        dep := fac^.sub;
+                        while ((dep <> NIL) and (not found)) do 
+                            begin
+                                spec := dep^.sub;
+                                while ((spec <> NIL) and (not found)) do 
+                                    begin
+                                        student := spec^.sub;
+                                        while ((student <> NIL) and (not found)) do 
+                                            begin
+                                                found := (student^.name = name);
+                                                student := student^.next;
+                                            end; 
+                                        spec := spec^.next;
+                                    end; 
+                                dep := dep^.next;
+                            end; 
+                        fac := fac^.next;
+                    end;
+                current := current^.next; 
+            end; 
+        searchStudent := found;
     end;
 
 //this procedure uses recursion (another one that does the same thing is present in the data file (iterative))

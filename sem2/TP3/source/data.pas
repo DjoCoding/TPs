@@ -263,6 +263,7 @@ procedure executeFunc(funcNumber : integer ;var head : pNode);
 
     var number : integer;
         info : infoArr;
+        name : string;
 
     begin
         if ((funcNumber > 25) or (funcNumber < 0)) then writeln('function number not in range!')
@@ -274,8 +275,10 @@ procedure executeFunc(funcNumber : integer ;var head : pNode);
                 else 
                     number := funcNumber mod 5;
                 
-                if (funcNumber <= 15) then info := getInput(number);
+                if ((funcNumber <= 5) or ((funcNumber >= 11) and (funcNumber <= 15))) then info := getInput(number);
 
+                if ((funcNumber <= 10) and (funcNumber >= 6)) then name := readString('type the name : ');
+                
                 case funcNumber of 
                     1  : begin 
                             addUniv(head , info);
@@ -295,18 +298,23 @@ procedure executeFunc(funcNumber : integer ;var head : pNode);
                     4  : begin 
                             addSpec(head , info); 
                             writeln;
-                            writeln('the Speciality ''' , info[1] ,''' is added succesfully!');
+                            writeln('the Speciality ''' , info[4] ,''' is added succesfully!');
                         end;
                     5  : begin 
                             addStudent(head , info); 
                             writeln;
-                            writeln('the Student ''' , info[1] ,''' is added succesfully!');
+                            writeln('the Student ''' , info[5] ,''' is added succesfully!');
                         end;
-                    6  : getAnswer(findUniv(head , info));
-                    7  : getAnswer(findFac(head, info));
-                    8  : getAnswer(findDep(head , info));
-                    9  : getAnswer(findSpec(head , info));
-                    10 : getAnswer(findStudent(head , info));
+                    // 6  : getAnswer(findUniv(head , info));
+                    // 7  : getAnswer(findFac(head, info));
+                    // 8  : getAnswer(findDep(head , info));
+                    // 9  : getAnswer(findSpec(head , info));
+                    // 10 : getAnswer(findStudent(head , info));
+                    6  : getAnswer(searchUniv(head , name));
+                    7  : getAnswer(searchFac(head, name));
+                    8  : getAnswer(searchDep(head , name));
+                    9  : getAnswer(searchSpec(head , name));
+                    10 : getAnswer(searchStudent(head , name));
                     11 : begin 
                             removeUniv(head , info);
                             writeln('the university ''' , info[1] ,''' is removed succesfully!');
