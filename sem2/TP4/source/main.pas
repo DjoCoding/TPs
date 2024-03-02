@@ -1,33 +1,50 @@
-program TP4;
+// uses dll , func;
 
-uses dll;
+uses doubly;
+
+// procedure main();
+
+//     var head , tail : pNode;
+//         funcNumber : integer;
+    
+//     begin
+//         head := NIL;
+//         tail := NIL;
+
+//         printMenu();
+
+//         repeat
+//             funcNumber := readInteger('type the function number: ');
+//             execFunction(funcNumber , head , tail);
+//         until (funcNumber = 0); 
+
+//         free(head , tail);
+//     end;
 
 procedure main();
 
-    var head, tail : pNode;
-        number : integer;
+    var lists : pLists;
+        list : pList;
+        value : integer;
 
     begin
         randomize;
 
-        head := NIL;
-        tail := NIL;
+        list := getList(10);
+        
+        print(list);
 
-        getRandomList(head , tail , 10);
+        lists := divideList(list);
 
-        print(head);
+        writeln('djaoued 1');
+        printLists(lists);
+        writeln('djaoued2');
+        
+        freeLists(lists);
 
-        bubbleSort(head , tail);
-
-        // insertionSort(head);
-
-        print(head);
-
-        twoSum(head , 30);
-
-        free(head , tail);
+        free(list);
     end;
 
-begin 
+begin
     main();
 end.

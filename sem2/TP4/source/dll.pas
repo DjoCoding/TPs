@@ -3,9 +3,15 @@ unit dll;
 interface 
 
     type pNode = ^Node;
+        pLinkedList = ^LinkedList;
+
         Node = record
             value : integer;
             next, prev : pNode;
+        end;
+        
+        LinkedList = record 
+            head , tail : pNode;
         end;
     
     procedure add(var head , tail : pNode ; value : integer ; pos: integer);
@@ -17,10 +23,10 @@ interface
     procedure addValue(head : pNode ; value : integer);
     procedure twoSum(var head : pNode ; value : integer);
     procedure insertionSort(var head : pNode);
-    procedure bubbleSort(var head , tail : pNode);
+    procedure bubbleSort(var head : pNode);
     function testSorting(head : pNode) : boolean;
     procedure insert(var head , tail : pNode ; value : integer);
-    procedure divideList(var head , tail , head1 , tail1 , head2 , tail2 : pNode);
+    procedure divideList(myListOne , myListTwo , myListThree: pLinkedList);
     procedure divideFour(var head , tail , head1 , tail1 , head2 , tail2 ,  head3 , tail3 , head4 , tail4 : pNode);
     procedure free(var head , tail : pNode);
 
@@ -342,20 +348,18 @@ procedure insertionSort(var head : pNode);
 
 // bubbleSort for linked list
 
-procedure bubbleSort(var head , tail : pNode);
+procedure bubbleSort(var head : pNode);
 
-    var current , last,  temp : pNode; 
-        i , j , value , len : integer;
+    var current , temp : pNode; 
 
     begin
-
         if (head <> NIL) then 
             begin
                 current := head;
-                last := tail;
 
-                while (current^.next <> NIL) do 
+                while (current^.next <> NIL) do
                     begin
+
                         temp := head;
 
                         while ((temp^.next <> NIL)) do 
