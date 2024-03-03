@@ -1,47 +1,24 @@
-// uses dll , func;
+uses doubly , func;
 
-uses doubly;
-
-// procedure main();
-
-//     var head , tail : pNode;
-//         funcNumber : integer;
-    
-//     begin
-//         head := NIL;
-//         tail := NIL;
-
-//         printMenu();
-
-//         repeat
-//             funcNumber := readInteger('type the function number: ');
-//             execFunction(funcNumber , head , tail);
-//         until (funcNumber = 0); 
-
-//         free(head , tail);
-//     end;
 
 procedure main();
 
-    var lists : pLists;
+    var number : integer;
         list : pList;
-        value : integer;
+        lists : pLists;
 
     begin
-        randomize;
+        list := NIL;
+        lists := NIL;
 
-        list := getList(10);
-        
-        print(list);
+        printMenu();
 
-        lists := divideList(list);
+        repeat
+            number := readInteger('type the number of the function you want to execute : ');
+            execFunction(list , lists , number);
+        until (number = 0); 
 
-        writeln('djaoued 1');
-        printLists(lists);
-        writeln('djaoued2');
-        
         freeLists(lists);
-
         free(list);
     end;
 

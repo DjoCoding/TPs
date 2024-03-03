@@ -30,15 +30,17 @@ interface
     procedure swap(list : pList ; pos1 , pos2 : integer);
     procedure reverseList(list : pList);
     procedure printReverse(list : pList);
+    procedure addOne(list : pList);
     procedure removeAfterValueX(list : pList ; value : integer);
     procedure Insertion_Sort(list : pList);
     procedure insert_value(list : pList; value : integer);
     procedure twoSum(list : pList ; value : integer);
     procedure bubble_sort(list : pList);
     function check_sorted_list(list : pList) : boolean;
-    function divideList(list : pList) : pLists;
+    procedure divideList(var lists : pLists ; list : pList);
     procedure printLists(lists : pLists);
     procedure freeLists(var lists : pLists);
+    procedure divideListIntoFour(var lists : pLists ; list : pList);
 
 
 implementation
@@ -153,16 +155,17 @@ procedure free(var list : pList);
     var node : pNode;
 
     begin
-        while (getHead(list) <> NIL) do 
+        if (list <> NIL) then 
             begin
-                node := getHead(list);
-                list^.head := node^.next;
-                dispose(node); 
+                while (getHead(list) <> NIL) do 
+                    begin
+                        node := getHead(list);
+                        list^.head := node^.next;
+                        dispose(node); 
+                    end; 
+                list^.tail := NIL;        
+                list := NIL;
             end; 
-        
-        list^.tail := NIL;
-        list := NIL;
-
         node := NIL;
     end;
 
@@ -280,22 +283,20 @@ procedure removeAfterValueX(list : pList ; value : integer);
     begin 
         node := getHead(list);
 
-        if (node <> NIL) then
+        if (node <> NIL) then 
             while (node^.next <> NIL) do 
-                if (node^.next^.value = value) then break 
+                if (node^.value = value) then 
+                    begin
+                        temp := node^.next;
+                        node^.next := temp^.next;
+                        if (temp^.next <> NIL) then 
+                            temp^.next^.prev := node;
+                        temp^.next := NIL;
+                        temp^.prev := NIL;
+                        dispose(temp);
+                    end
                 else 
                     node := node^.next;
-        
-        if (node^.next <> NIL) then 
-            begin
-                temp := node^.next;
-                
-                node^.next := temp^.next;
-                temp^.next^.prev := node;
-
-                dispose(temp);
-                temp := NIL;
-            end;
     end;
 
 procedure printReverse(list : pList);
@@ -368,6 +369,7 @@ procedure Insertion_Sort(list : pList);
         node := NIL;
         temp := NIL;
     end;
+
 
 procedure insert_value(list : pList; value : integer);
 
@@ -534,117 +536,95 @@ function length(list : pList) : integer;
         length := result;
     end;
 
-function init_lists() : pLists;
+procedure addToLists(var lists : pLists ; list : pList);
 
-    var result : pLists;
-
-    begin
-        new(result);
-        init_lists := result;
-        result := NIL; 
-    end;
-
-procedure addList(var lists : pLists ; list : pList);
-    
     var temp : pLists;
 
-    begin  
-        temp := lists;
-
-        if (temp = NIL) then 
-            begin
-                temp := init_lists();
-                temp^.list := list;
-                temp^.next := NIL;
-                lists := temp; 
-            end
-        else 
-            begin
-                while (temp^.next <> NIL) do 
-                    temp := temp^.next;
-                new(temp^.next);
-                temp := temp^.next;
-                temp^.list := list;
-                temp^.next := NIL; 
-            end;
-        
-        temp := NIL;
+    begin
+        new(temp);
+        temp^.list := list;
+        temp^.next := lists;
+        lists := temp;
     end;
 
-function divideList(list : pList) : pLists;
 
-    var result : pLists;
-        list1 , list2 : pList;
-        node , tempNode , head , tail : pNode;
+procedure divideList(var lists : pLists ; list : pList);
+
+    var 
+        tempList : pList;
+        mid : pNode;
         len : integer;
     
     begin
-        head := getHead(list);
-        tail := getTail(list);
-
-        result := NIL;
         len := length(list);
 
-        node := getNode(list , len - len div 2);
+        mid := getNode(list , len - len div 2);
 
-        tempNode := node^.next;
-        tempNode^.prev := NIL;
+        new(tempList);
+        tempList^.head := mid^.next;
+        tempList^.tail := list^.tail;
+        
+        if (tempList^.head <> NIL) then 
+            tempList^.head^.prev := NIL;
 
-        node^.next := NIL;
+        mid^.next := NIL;
 
-        list1 := createList();
-        list1^.head := head;
-        list1^.tail := node;
-
-        addList(result , list1);
-
-        list2 := createList();
-        list2^.head := tempNode;
-        list2^.tail := tail;
-
-        addList(result , list2);
-
-
-        free(list1);
-        free(list2);
-
-        divideList := result;
-
-        list1 := NIL;
-        list2 := NIL;
-        head := NIL;
-        tail := NIL;
-        node := NIL;
-        tempNode := NIL;
+        addToLists(lists , tempList);
+        addToLists(lists , list);
     end;
 
 procedure printLists(lists : pLists);
 
-    var list : pList;
+    var tempList : pList;
         temp : pLists;
-
-    begin 
+    
+    begin
         temp := lists;
 
         while (temp <> NIL) do 
             begin
-                print(temp^.list);
-                temp := temp^.next;
-            end;
-    end; 
+                tempList := temp^.list;
+                print(tempList);
+                temp := temp^.next; 
+            end; 
+    end;
 
 procedure freeLists(var lists : pLists);
 
-    var temp :pLists ; 
+    var temp : pLists;
 
-    begin
+    begin 
         while (lists <> NIL) do 
             begin
-                temp := lists;
-                lists := temp^.next;
-                free(temp^.list);
-                dispose(temp); 
+                temp := lists^.next;
+                free(lists^.list);
+                dispose(lists);
+                lists := temp; 
             end;
+    end;
+
+procedure divideListIntoFour(var lists : pLists ; list : pList);
+
+    var 
+        tempList : pList;  
+        node : pNode;
+        len : integer;
+
+    begin
+        len := length(list);
+        node := getNode(list , len - len div 2);
+
+        new(tempList);
+        tempList^.head := node^.next;
+        tempList^.tail := list^.tail;
+        
+        if (node^.next <> NIL) then
+            node^.next^.prev := NIL;
+
+        node^.next := NIL;
+
+        divideList(lists , tempList);
+        divideList(lists , list);
     end;
 
 

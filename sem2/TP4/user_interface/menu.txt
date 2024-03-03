@@ -15,5 +15,7 @@ type the number of the function you want to execute (0 to end the program)...
 11 - TEST IF THE LIST IS SORTED OR NO
 12 - DIVIDE THE LIST (GET 2 SUB-LINKED LIST)
 13 - DIVIDE THE LIST (GET 4 SUB-LINKED LIST)
+14 - PRINT THE MENU
+15 - QUIT
 
 

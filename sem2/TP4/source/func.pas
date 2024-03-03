@@ -2,13 +2,12 @@ unit func;
 
 interface 
 
-    uses dll;
+    uses doubly;
 
     function readInteger(s : string) : integer;
     function readString(s : string) : string;
     procedure printMenu();
-    procedure execFunction(funcNumber : integer ; var head , tail : pNode);
-
+    procedure execFunction(var list : pList ; var lists : pLists ;var funcNumber : integer);
 
 implementation
 
@@ -50,60 +49,75 @@ procedure printMenu();
         close(myFile);
     end;
 
-procedure writeLines();
+procedure writeLines(number : integer);
 
     var i : integer;
 
     begin
-        for i := 1 to 2 do 
+        for i := 1 to number do 
             writeln(); 
     end;
 
-procedure execFunction(funcNumber : integer ; var head , tail : pNode);
+procedure execFunction(var list : pList ; var lists : pLists ;var funcNumber : integer);
+    
+    var pos1 , pos2 , value : integer;
 
-    var pos1 , pos2 , size , temp : integer;
-
-    begin 
-        writeLines;
+    begin
+        writeLines(1);
 
         case funcNumber of 
-            1 : begin 
-                    free(head , tail);
-                    size := readInteger('type the size of the linked list : ');
-                    getRandomList(head , tail , size);
+            1 :  begin
+                    free(list);
+                    list := getList(11); 
                 end;
-            2 : print(head);
-            3 : begin
-                    pos1 := readInteger('type the position of the first node : ');
-                    pos2 := readInteger('type the position of the second node : ');
-                    swapNodeValues(head , pos1 , pos2); 
+            2 : print(list); 
+            3 : begin 
+                    pos1 := readInteger('type the index of the first element : ');
+                    pos2 := readInteger('type the index of the second element : ');
+                    swap(list , pos1 , pos2);
                 end;
-            4 : reverseList(head , tail);
-            5 : begin
-                    temp := readInteger('type the value : ');
-                    removeAfterValue(head , tail , temp); 
+            4 : reverseList(list);
+            5 : begin   
+                    value := readInteger('type the value you want to remove after it : ');
+                    removeAfterValueX(list , value);
                 end;
-            6 : addValue(head , 1);
+            6 : addOne(list);
             7 : begin
-                    temp := readInteger('type the value you wanna insert in the list: '); 
-                    insertionSort(head);
-                    insert(head, tail , temp);
+                    Insertion_Sort(list);
+                    value := readInteger('type the value to insert it in the sorted list : ');
+                    insert_value(list , value); 
                 end;
             8 : begin
-                    temp := readInteger('type the value you want : ');
-                    twoSum(head , temp); 
+                    value := readInteger('type the value : ');
+                    twoSum(list , value); 
                 end;
-            9 : insertionSort(head);
-            10 : bubbleSort(head);
+            9 : Insertion_Sort(list);
+            10 : bubble_sort(list);
             11 : begin 
-                    if (testSorting(head)) then writeln('the list is sorted!')
+                    if (check_sorted_list(list)) then writeln('the list is sorted!')
                     else 
-                        writeln('the list is not sorted!');
+                        writeln('the list isn''t sorted!');
                 end;
-            12 : begin
-                    divideList() 
+            12 : begin  
+                    freeLists(lists);
+                    divideList(lists , list); 
+                    writeln('those are the lists : ');
+                    writeln;
+                    printLists(lists);
                 end;
+            13 : begin 
+                    freeLists(lists);
+                    divideListIntoFour(lists , list);
+                    writeln('those are the lists : ');
+                    writeln;
+                    printLists(lists);
+                end;
+            14 : printMenu();
+            15 : funcNumber := 0;
+            
         end;
+
+        writeLines(2);
     end;
 
 begin 
