@@ -24,6 +24,7 @@ interface
     function createList() : pList;
     procedure add(list : pList; value : integer);
     procedure free(var list : pList);
+    function getHead(list : pList) : pNode;
 
     function getList(length : integer) : pList;
     procedure print(list : pList);
@@ -447,37 +448,44 @@ procedure twoSum(list : pList ; value : integer);
         writeln('}');
     end;
 
-procedure bubble_sort(list : pList);
+procedure swap(var a , b : integer);
 
-    var node , temp , last : pNode;
-        value : integer;
+    var temp : integer;
 
     begin
-        node := getHead(list);  
+        temp := a;
+        a := b;
+        b := temp; 
+    end;
+
+
+procedure bubble_sort(list : pList);
+
+    var node , last , temp : pNode;
+
+    begin
+        node := getHead(list);
 
         if (node <> NIL) then 
             begin
+
                 last := getTail(list);
 
-                while (node^.next <> NIL) do
+                while (node^.next <> NIL) do 
                     begin
                         temp := getHead(list);
 
                         while (temp <> last) do 
                             begin
-                                if (temp^.value > temp^.next^.value) then 
-                                    begin
-                                        value := temp^.value;
-                                        temp^.value := temp^.next^.value;
-                                        temp^.next^.value := value; 
-                                    end; 
+                                if (temp^.value > temp^.next^.value) then   
+                                    swap(temp^.value , temp^.next^.value);
                                 temp := temp^.next;
                             end; 
                         
                         last := last^.prev;
                         node := node^.next;
-                    end; 
-            end;
+                    end;
+            end; 
     end;
 
 function check_sorted_list(list : pList) : boolean;
@@ -525,6 +533,7 @@ function length(list : pList) : integer;
     
     begin 
         node := getHead(list);
+
         result := 0;
 
         while (node <> NIL) do 
@@ -534,6 +543,25 @@ function length(list : pList) : integer;
             end;
         
         length := result;
+    end;
+
+function copyList(list : pList) : pList;
+
+    var node : pNode;
+        result : pList;
+
+    begin 
+        node := getHead(list);
+
+        result := createList();
+
+        while (node <> NIL) do
+            begin 
+                add(result , node^.value);
+                node := node^.next;
+            end;
+        
+        copyList := result;
     end;
 
 procedure addToLists(var lists : pLists ; list : pList);
@@ -554,15 +582,20 @@ procedure divideList(var lists : pLists ; list : pList);
         tempList : pList;
         mid : pNode;
         len : integer;
+        newList : pList;
     
     begin
-        len := length(list);
+        newList := copyList(list);
 
-        mid := getNode(list , len - len div 2);
+        len := length(newList);
+
+        mid := getNode(newList , len - (len div 2));
 
         new(tempList);
         tempList^.head := mid^.next;
         tempList^.tail := list^.tail;
+
+        newList^.tail := mid;
         
         if (tempList^.head <> NIL) then 
             tempList^.head^.prev := NIL;
@@ -570,22 +603,27 @@ procedure divideList(var lists : pLists ; list : pList);
         mid^.next := NIL;
 
         addToLists(lists , tempList);
-        addToLists(lists , list);
+        addToLists(lists , newList);
     end;
 
 procedure printLists(lists : pLists);
 
     var tempList : pList;
         temp : pLists;
+        i : integer;
     
     begin
         temp := lists;
+        i := 1;
 
         while (temp <> NIL) do 
             begin
                 tempList := temp^.list;
+                write(i , ' : ');
                 print(tempList);
+                writeln;
                 temp := temp^.next; 
+                i := i + 1;
             end; 
     end;
 
@@ -606,17 +644,22 @@ procedure freeLists(var lists : pLists);
 procedure divideListIntoFour(var lists : pLists ; list : pList);
 
     var 
-        tempList : pList;  
+        tempList , newList : pList;  
         node : pNode;
         len : integer;
 
     begin
-        len := length(list);
-        node := getNode(list , len - len div 2);
+        newList := copyList(list);
+
+        len := length(newList);
+        node := getNode(newList , len - len div 2);
+
 
         new(tempList);
         tempList^.head := node^.next;
         tempList^.tail := list^.tail;
+
+        newList^.tail := node;
         
         if (node^.next <> NIL) then
             node^.next^.prev := NIL;
@@ -624,7 +667,7 @@ procedure divideListIntoFour(var lists : pLists ; list : pList);
         node^.next := NIL;
 
         divideList(lists , tempList);
-        divideList(lists , list);
+        divideList(lists , newList);
     end;
 
 

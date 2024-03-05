@@ -13,13 +13,14 @@ procedure main();
 
         printMenu();
 
+        randomize;
+
         repeat
             number := readInteger('type the number of the function you want to execute : ');
             execFunction(list , lists , number);
         until (number = 0); 
 
         freeLists(lists);
-        free(list);
     end;
 
 begin

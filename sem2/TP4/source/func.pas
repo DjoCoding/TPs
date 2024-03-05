@@ -68,7 +68,7 @@ procedure execFunction(var list : pList ; var lists : pLists ;var funcNumber : i
         case funcNumber of 
             1 :  begin
                     free(list);
-                    list := getList(11); 
+                    list := getList(25); 
                 end;
             2 : print(list); 
             3 : begin 
@@ -98,8 +98,9 @@ procedure execFunction(var list : pList ; var lists : pLists ;var funcNumber : i
                     else 
                         writeln('the list isn''t sorted!');
                 end;
-            12 : begin  
-                    freeLists(lists);
+            12 : begin 
+                    freeLists(lists); 
+                    writeln(getHead(list) = NIL);
                     divideList(lists , list); 
                     writeln('those are the lists : ');
                     writeln;
