@@ -16,7 +16,7 @@ procedure printMenu();
         line : string;
 
     begin
-        assign(myFile , './user_interface/menu.txt');
+        assign(myFile , '../user_interface/menu.txt');
 
         reset(myFile);
 
