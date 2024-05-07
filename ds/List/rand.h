@@ -1,0 +1,1 @@
+int get_random(int max_number);
