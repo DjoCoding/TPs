@@ -1,0 +1,5 @@
+clear 
+
+./main 
+
+rm main

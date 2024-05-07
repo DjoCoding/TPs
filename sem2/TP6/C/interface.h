@@ -24,8 +24,9 @@ void run() {
     display_file_content();
 
     do {
-        printf("\n");
         user_choice = read_integer("type the function number: ");
+       
+        printf("\n");
         switch(user_choice) {
             case 0: {
                 display_file_content();
