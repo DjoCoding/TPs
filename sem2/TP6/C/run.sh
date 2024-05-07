@@ -1,5 +1,3 @@
 clear 
-
 ./main 
-
 rm main

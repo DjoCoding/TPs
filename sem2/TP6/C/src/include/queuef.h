@@ -3,10 +3,10 @@
 #include <stdbool.h>
 
 
-#ifndef NODEF_H
-#define NODEF_H
-    #include "./nodef.h"
-#endif
+#include "./nodef.h"
+
+#ifndef QUEUEF_H 
+#define QUEUEF_H 
 
 typedef struct {
     Node *nodes[100];
@@ -54,3 +54,5 @@ void queue_remove(queue_t *queue) {
     free(*queue);
     *queue = NULL;
 }
+
+#endif

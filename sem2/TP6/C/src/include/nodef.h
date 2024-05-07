@@ -1,8 +1,7 @@
-#ifndef FUNC_H
-#define FUNC_H
-    #include "./func.h"
-#endif
+#include "./func.h"
 
+#ifndef NODEF_H 
+#define NODEF_H 
 
 typedef struct Node {
     int value;
@@ -206,18 +205,19 @@ bool isleaf(Node *root) {
 
 void remove_left_most_child(Node **root) {
 
-    if (isleaf(*root)) {
+    if (!((*root)->left)) {
+        Node *node = (*root)->right;
         free(*root);
-        *root = NULL;
+        *root = node;
         return;
     }
 
-
     Node *current = *root;
     while (current->left) {
-        if (isleaf(current->left)) {
+        if (!(current->left->left)) {
+            Node *node = current->left->right;
             free(current->left);
-            current->left = NULL;
+            current->left = node;
             return;
         }
         current = current->left;
@@ -226,18 +226,19 @@ void remove_left_most_child(Node **root) {
 
 void remove_right_most_child(Node **root) {
 
-    if (isleaf(*root)) {
+    if (!((*root)->right)) {
+        Node *node = (*root)->left;
         free(*root);
-        *root = NULL;
+        *root = node;
         return;
     }
 
-
     Node *current = *root;
     while (current->right) {
-        if (isleaf(current->right)) {
+        if (!(current->right->right)) {
+            Node *node = current->right->left;
             free(current->right);
-            current->right = NULL;
+            current->right = node;
             return;
         }
         current = current->right;
@@ -248,3 +249,5 @@ void remove_nodes(Node **root) {
     remove_left_most_child(root);
     remove_right_most_child(root);
 }
+
+#endif 

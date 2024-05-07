@@ -1,21 +1,11 @@
 #include <stdio.h>
 
-#ifndef NODEF_H
-#define NODEF_H
-    #include "./nodef.h"
-#endif
+#include "./nodef.h"
+#include "./bfs.h"
+#include "./file.h"
 
-#ifndef BFS_H
-#define BFS_H
-    #include "./bfs.h"
-#endif
-
-#ifndef FILE_H
-#define FILE_H
-    #include "./file.h"
-#endif
-
-
+#ifndef INTERFACE_H 
+#define INTERFACE_H 
 
 void run() {
     Node *root = NULL;
@@ -24,8 +14,8 @@ void run() {
     display_file_content();
 
     do {
-        user_choice = read_integer("type the function number: ");
-       
+        user_choice = read_integer(">>>>>> ");
+
         printf("\n");
         switch(user_choice) {
             case 0: {
@@ -108,3 +98,5 @@ void run() {
     } while (user_choice != -1);
     remove_tree(&root);
 }   
+
+#endif

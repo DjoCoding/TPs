@@ -1,12 +1,8 @@
-#ifndef QUEUEF_H
-#define QUEUEF_H
-    #include "./queuef.h"
-#endif
+#include "./queuef.h"
+#include "./nodef.h"
 
-#ifndef NODEF_H
-#define NODEF_H
-    #include "./nodef.h"
-#endif
+#ifndef BFS_H
+#define BFS_H
 
 void bfs(Node *root) {
     queue_t queue = queue_init();
@@ -36,3 +32,5 @@ void bfs(Node *root) {
     printf("\n");
     queue_remove(&queue);
 }
+
+#endif

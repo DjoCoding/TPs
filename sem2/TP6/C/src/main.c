@@ -3,11 +3,7 @@
 #include <stdbool.h>
 #include <time.h>
 
-#ifndef INTERFACE_H
-#define INTERFACE_H
-    #include "./interface.h"
-#endif
-
+#include "./include/interface.h"
 
 int main(void) {
     srand(time(NULL));
