@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "./lib.h"
 #include "../include/tree.h"
+#include "../include/func.h"
 
 #define NUMBER_OF_ELEMENTS 10
 
@@ -18,36 +19,9 @@ void display_array() {
     printf("}\n");
 }
 
-void print_file_content(const char *filename) {
-    FILE *file = fopen(filename, "r");
-
-    if (!file) {
-        fprintf(stderr, "COULDN'T OPEN THE FILE\n");
-        exit(1);
-    }
-
-    char c;
-
-    while ((c = fgetc(file)) != EOF) {
-        putchar(c);
-    }
-
-    printf("\n");
-
-    fclose(file);
-}
-
 void usage() {
     print_file_content("./interface.txt");
 }
-
-int read_integer(const char *s) {
-    printf("%s", s);
-    int result;
-    scanf("%d", &result);
-    return result;
-}
-
 
 void run() {
     Node *root = NULL;
